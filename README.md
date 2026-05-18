@@ -1,4 +1,4 @@
-# Matsvei Hemza — Algorithms Project (Spring 2026)
+# Matsvei Hemza — Algorithms Project
 
 Analysis of the Withings smartwatch dataset (12 participants, ~290 days each):
 daily activity (steps, distance, heart rate) and sleep metrics.
