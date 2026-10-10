@@ -1,72 +1,58 @@
-# Matsvei Hemza — Algorithms Project
+# smartwatch-algorithms
 
-Analysis of the Withings smartwatch dataset (12 participants, ~290 days each):
-daily activity (steps, distance, heart rate) and sleep metrics.
+Algorithmic analysis of daily activity and sleep data from Withings smartwatches
+(12 participants, ~290 days each): steps, distance, heart rate and sleep metrics.
 
-The project contains three analyses of increasing complexity:
+Course project for **Algorithmics** (Algorithmique), University of Geneva, Spring 2026.
 
-- `src/beginner.py` — most active weekday per participant (O(n) aggregation).
-- `src/intermediate.py` — does yesterday's activity affect today's sleep?
-  Baseline O(n) scan vs. O(log n) binary search on a sorted per-participant index,
-  plus Pearson correlation.
-- `src/advanced.py` — Longest Increasing Subsequence of daily steps.
-  Baseline O(n²) DP vs. optimized O(n log n) patience sorting.
+The project contains three analyses of increasing complexity, each comparing a
+baseline solution with an optimized one:
 
-See [`src/README.md`](src/README.md) for the per-analysis breakdown (problem,
-algorithm, complexity, tests).
+| Level        | File                                             | Question                                         | Algorithms                                   |
+| ------------ | ------------------------------------------------ | ------------------------------------------------ | -------------------------------------------- |
+| Beginner     | [`src/beginner.py`](src/beginner.py)             | Which weekday is the most active per participant? | O(n) group-by aggregation                    |
+| Intermediate | [`src/intermediate.py`](src/intermediate.py)     | Does yesterday's activity affect today's sleep?  | O(n) scan vs. O(log n) binary search, Pearson correlation |
+| Advanced     | [`src/advanced.py`](src/advanced.py)             | Longest strictly increasing trend in daily steps | O(n²) DP vs. O(n log n) patience sorting (LIS) |
 
-## Prerequisites
+Detailed specifications for each analysis (problem, algorithm, complexity, tests)
+are at the [end of this file](#analysis-specifications).
+
+## Dataset
+
+> **The dataset is not included in this repository.** It contains health data
+> (heart rate, sleep) of real study participants and was provided for the course
+> only.
+
+The scripts expect one CSV file per participant in `data/researchdata/`,
+named `<participant_id>.csv`, with a header such as:
+
+```
+DATE,DAY_OF_THE_WEEK,MONTH,SEASON,ACTIVITY_steps,ACTIVITY_distance,...,SLEEP_totalsleeptime,...
+06.07.21,1,6,0,2584,1841,...,24960,...
+```
+
+`DATE` is in `DD.MM.YY` format. If you have access to the data, place the files
+there; the folder is listed in `.gitignore`.
+
+## Requirements
 
 - **Python 3.9 or newer** (the code uses PEP 585 generic types like `list[int]`).
-- **git** for cloning the repository.
+- No third-party packages: every script uses the Python standard library only.
 
-No third-party dependencies — every script uses the Python standard library only.
+## Getting started
 
-## Installation
+```bash
+git clone git@github.com:JetFire01/smartwatch-algorithms.git
+cd smartwatch-algorithms
 
-1. **Clone the repository**
-
-   ```bash
-   git clone git@gitlab.unige.ch:alg-26/spring-2026/matsvei-hemza.git
-   cd matsvei-hemza
-   ```
-
-   If you don't have SSH access set up, use HTTPS instead:
-
-   ```bash
-   git clone https://gitlab.unige.ch/alg-26/spring-2026/matsvei-hemza.git
-   ```
-
-2. **Create and activate a virtual environment** (recommended)
-
-   ```bash
-   python3 -m venv .venv
-   source .venv/bin/activate          # macOS / Linux
-   .venv\Scripts\activate             # Windows (PowerShell / cmd)
-   ```
-
-3. **Install dependencies**
-
-   `requirements.txt` is currently empty (stdlib only), but running this is safe
-   and future-proof:
-
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-4. **Verify the dataset is present**
-
-   The CSV files should already be in `data/researchdata/` (12 files named
-   `<participant_id>.csv`). Check with:
-
-   ```bash
-   ls data/researchdata/
-   ```
+python3 -m venv .venv
+source .venv/bin/activate          # macOS / Linux
+.venv\Scripts\activate             # Windows
+```
 
 ## Running the analyses
 
-Each script runs its inline tests on import and then prints results from the
-real dataset:
+Each script runs its inline tests first and then prints results from the dataset:
 
 ```bash
 python src/beginner.py
@@ -75,23 +61,24 @@ python src/advanced.py
 ```
 
 Expected output begins with `All tests passed!` followed by per-participant
-results.
+results. Without the dataset the tests still run, and the script then reports
+that no data was loaded.
 
 ## Project structure
 
 ```
-matsvei-hemza/
+smartwatch-algorithms/
 ├── data/
-│   └── researchdata/         # 12 participant CSV files
+│   └── researchdata/         # participant CSV files (not tracked)
 ├── src/
 │   ├── beginner.py           # Analysis 1
 │   ├── intermediate.py       # Analysis 2
-│   ├── advanced.py           # Analysis 3
-│   └── README.md             # Per-analysis specifications
+│   └── advanced.py           # Analysis 3
 ├── requirements.txt
 └── README.md
 ```
 
+## Analysis specifications
 
 **Analysis 1 (Beginner)**
 
